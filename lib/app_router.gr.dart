@@ -42,15 +42,27 @@ class _$AppRouter extends RootStackRouter {
       );
     },
     NoteListRoute.name: (routeData) {
+      final queryParams = routeData.queryParams;
+      final args = routeData.argsAs<NoteListRouteArgs>(
+          orElse: () => NoteListRouteArgs(test: queryParams.optString('test')));
       return MaterialPageX<dynamic>(
         routeData: routeData,
-        child: NoteListPage(),
+        child: NoteListPage(
+          key: args.key,
+          test: args.test,
+        ),
       );
     },
     NoteDetailsRoute.name: (routeData) {
+      final pathParams = routeData.inheritedPathParams;
+      final args = routeData.argsAs<NoteDetailsRouteArgs>(
+          orElse: () => NoteDetailsRouteArgs(id: pathParams.getInt('id')));
       return MaterialPageX<dynamic>(
         routeData: routeData,
-        child: NoteDetailsPage(),
+        child: NoteDetailsPage(
+          key: args.key,
+          id: args.id,
+        ),
       );
     },
   };
@@ -84,6 +96,12 @@ class _$AppRouter extends RootStackRouter {
               parent: EmptyRouterRoute.name,
             ),
           ],
+        ),
+        RouteConfig(
+          '/redirect#redirect',
+          path: '/redirect',
+          redirectTo: '/notes',
+          fullMatch: true,
         ),
       ];
 }
@@ -139,24 +157,70 @@ class EmptyRouterRoute extends PageRouteInfo<void> {
 
 /// generated route for
 /// [NoteListPage]
-class NoteListRoute extends PageRouteInfo<void> {
-  const NoteListRoute()
-      : super(
+class NoteListRoute extends PageRouteInfo<NoteListRouteArgs> {
+  NoteListRoute({
+    Key? key,
+    String? test,
+  }) : super(
           NoteListRoute.name,
           path: '',
+          args: NoteListRouteArgs(
+            key: key,
+            test: test,
+          ),
+          rawQueryParams: {'test': test},
         );
 
   static const String name = 'NoteListRoute';
 }
 
+class NoteListRouteArgs {
+  const NoteListRouteArgs({
+    this.key,
+    this.test,
+  });
+
+  final Key? key;
+
+  final String? test;
+
+  @override
+  String toString() {
+    return 'NoteListRouteArgs{key: $key, test: $test}';
+  }
+}
+
 /// generated route for
 /// [NoteDetailsPage]
-class NoteDetailsRoute extends PageRouteInfo<void> {
-  const NoteDetailsRoute()
-      : super(
+class NoteDetailsRoute extends PageRouteInfo<NoteDetailsRouteArgs> {
+  NoteDetailsRoute({
+    Key? key,
+    required int id,
+  }) : super(
           NoteDetailsRoute.name,
           path: ':id',
+          args: NoteDetailsRouteArgs(
+            key: key,
+            id: id,
+          ),
+          rawPathParams: {'id': id},
         );
 
   static const String name = 'NoteDetailsRoute';
+}
+
+class NoteDetailsRouteArgs {
+  const NoteDetailsRouteArgs({
+    this.key,
+    required this.id,
+  });
+
+  final Key? key;
+
+  final int id;
+
+  @override
+  String toString() {
+    return 'NoteDetailsRouteArgs{key: $key, id: $id}';
+  }
 }

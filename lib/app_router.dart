@@ -19,6 +19,7 @@ part 'app_router.gr.dart';
       AutoRoute(path: '', page: NoteListPage),
       AutoRoute(path: ':id', page: NoteDetailsPage),
     ]),
+    RedirectRoute(path: '/redirect', redirectTo: '/notes')
   ],
 )
 class AppRouter extends _$AppRouter {}
